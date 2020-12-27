@@ -21,8 +21,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 class _MyHomePageState extends State<MyHomePage> {
-  double pos_l = 0;
-  double pos_r = 0;
+  double pos_l = -100;
+  double pos_r = -100;
   double pos_t = 0;
   double pos_b = 0;
   @override
@@ -33,10 +33,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   void _movewidget() {
     setState(() {
-          pos_l = 100;
-          pos_r = 0;
-          pos_t = 0;
-          pos_b = 100;
+          // pos_l = 100;
+          // pos_r = 0;
+          // pos_t = 0;
+          // pos_b = 100;
+      pos_l = 200;
+      pos_t = 400;
     });
     // setState(() {
     //   if (pos == "Up") {
@@ -74,10 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 AnimatedPositioned(
                   left: pos_l,
-                  right: pos_r,
+                  //right: pos_r,
                   top: pos_t,
-                  bottom: pos_b,
-                  duration: Duration(milliseconds: 500),
+                  //bottom: pos_b,
+                  duration: Duration(milliseconds: 5000),
                   child: Card(
                     child: Container(
                       width: 100.0,
