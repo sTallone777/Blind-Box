@@ -31,10 +31,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState(){
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _movewidget());
+    // WidgetsBinding.instance
+    //     .addPostFrameCallback((_) => _movewidget());
   }
-  void _movewidget() {
+  void _moveCard() {
     setState(() {
           // pos_l = 100;
           // pos_r = 0;
@@ -82,14 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 //right: pos_r,
                 top: pos_t,
                 //bottom: pos_b,
-                duration: Duration(milliseconds: 5000),
-                child: Card(
-                  child: Container(
-                    width: 100.0,
-                    height: 100.0,
-                    color: Colors.purple,
-                  ),
-                ),
+                duration: Duration(milliseconds: 1000),
+                child: AnimatedBlindCard('assets/cake.jpg'),
 
                 // child: Center(
                 //   child: Container(
@@ -99,6 +93,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 //     height: 100.0,
                 //   ),
                 // ),
+              ),
+
+              AnimatedPositioned(
+                left: pos_l,
+                //right: pos_r,
+                top: pos_t,
+                //bottom: pos_b,
+                duration: Duration(milliseconds: 1000),
+                child: AnimatedBlindCard('assets/ysl.jpg'),
+              ),
+
+              RaisedButton(
+                child: Text('Start'),
+                onPressed: () => _moveCard(),
               ),
               // Positioned(
               //   bottom: 100,
