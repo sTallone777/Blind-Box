@@ -10,7 +10,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //title: 'Blind-Box',
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
@@ -24,13 +23,13 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+
+const double gridWidth = 380.0;
+const double gridHeight = gridWidth / 0.65;
+
 class _MyHomePageState extends State<MyHomePage> {
-  //double pos_l0 = 100;
-  double pos_t0 = 200;
-  //double pos_l1 = -60;
-  double pos_t1 = -600;
-  // double pos_l2 = -60;
-  // double pos_t2 = 2000;
+  double buttonTop;
+  double gridTop = -gridHeight;
 
   List<String> fileNames = [
     'assets/t1.JPG',
@@ -50,62 +49,15 @@ class _MyHomePageState extends State<MyHomePage> {
     'assets/t15.JPG',
     'assets/t16.JPG',
   ];
-  // GlobalKey key1 = GlobalKey();
-  // GlobalKey key2 = GlobalKey();
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   WidgetsBinding.instance
-  //       .addPostFrameCallback((_) => _moveCard());
-  // }
-  void _moveCard() {
-    setState(() {
-      // pos_l = 100;
-      // pos_r = 0;
-      // pos_t = 0;
-      // pos_b = 100;
-      //pos_l0 = 100;
-      pos_t0 = 600;
-      //pos_l1 = 20;
-      pos_t1 = 200;
-      // pos_l2 = 100;
-      // pos_t2 = 200;
-      //RenderBox ap1 = key1.currentContext.findRenderObject();
 
+  void _moveCard() {
+    Size s = MediaQuery.of(context).size;
+    setState(() {
+      gridTop = (s.height - gridHeight) / 2;
+      buttonTop = gridTop + gridHeight + 20.0;
     });
   }
-  // void _moveCard2() {
-  //   setState(() {
-  //     pos_l2 = 110;
-  //     pos_t2 = 200;
-  //
-  //     //RenderBox ap1 = key1.currentContext.findRenderObject();
-  //
-  //   });
-  //   // setState(() {
-  //   //   if (pos == "Up") {
-  //   //     pos_l = 0;
-  //   //     pos_r = 0;
-  //   //     pos_t = 0;
-  //   //     pos_b = 100;
-  //   //   } else if (pos == "Right") {
-  //   //     pos_l = 100;
-  //   //     pos_r = 0;
-  //   //     pos_t = 0;
-  //   //     pos_b = 0;
-  //   //   } else if (pos == "Down") {
-  //   //     pos_l = 0;
-  //   //     pos_r = 0;
-  //   //     pos_t = 100;
-  //   //     pos_b = 0;
-  //   //   } else if (pos == "Left") {
-  //   //     pos_l = 0;
-  //   //     pos_r = 100;
-  //   //     pos_t = 0;
-  //   //     pos_b = 0;
-  //   //   }
-  //   // });
-  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,15 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Container(
           child: Stack(
+            alignment: Alignment.topCenter,
             children: <Widget>[
               AnimatedPositioned(
-                //key: key1,
-                //eft: pos_l1,
-                //right: pos_r,
-                top: pos_t1,
-                //bottom: pos_b,
-                width: 400,
-                height: 600,
+                top: gridTop,
+                width: gridWidth,
+                height: gridHeight,
                 duration: Duration(milliseconds: 1000),
                 child: GridView.builder(
                   padding: EdgeInsets.all(10.0),
@@ -131,89 +80,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   gridDelegate:
                     SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 5.0,
+                      crossAxisSpacing: 5.0,
                       childAspectRatio: 0.75,
                     ),
                   itemBuilder: (context, i){
                     return AnimatedBlindCard(fileNames[i]);
                   },
                 ),
-
-                // child: Center(
-                //   child: Container(
-                //     alignment: Alignment.center,
-                //     color: Colors.purple,
-                //     width: 100.0,
-                //     height: 100.0,
-                //   ),
-                // ),
               ),
 
-              // AnimatedPositioned(
-              //   //key: key2,
-              //   left: pos_l2,
-              //   //right: pos_r,
-              //   top: pos_t2,
-              //   //bottom: pos_b,
-              //   duration: Duration(milliseconds: 1000),
-              //   child: AnimatedBlindCard('assets/ysl.jpg'),
-              // ),
-
               AnimatedPositioned(
-                //key: key2,
-                //left: pos_l0,
-                //right: pos_r,
-                top: pos_t0,
-                //bottom: pos_b,
+                top: buttonTop,
                 duration: Duration(milliseconds: 1000),
                 child: RaisedButton(
                   child: Text('Start'),
                   onPressed: () => _moveCard(),
                 ),
               ),
-
-
-              // Positioned(
-              //   bottom: 100,
-              //   left: 160,
-              //   child: RaisedButton(
-              //     onPressed: () {
-              //       _movewidget("Up");
-              //     },
-              //     child: Icon(Icons.keyboard_arrow_up),
-              //   ),
-              // ),
-              // Positioned(
-              //   bottom: 60,
-              //   left: 260,
-              //   child: RaisedButton(
-              //     onPressed: () {
-              //       _movewidget("Right");
-              //     },
-              //     child: Icon(Icons.keyboard_arrow_right),
-              //   ),
-              // ),
-              // Positioned(
-              //   bottom: 10,
-              //   left: 160,
-              //   child: RaisedButton(
-              //     onPressed: () {
-              //       _movewidget("Down");
-              //     },
-              //     child: Icon(Icons.keyboard_arrow_down),
-              //   ),
-              // ),
-              // Positioned(
-              //   bottom: 60,
-              //   left: 60,
-              //   child: RaisedButton(
-              //     onPressed: () {
-              //       _movewidget("Left");
-              //     },
-              //     child: Icon(Icons.keyboard_arrow_left),
-              //   ),
-              // )
             ],
           ),
         )
