@@ -1,7 +1,8 @@
-import 'dart:io';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,33 +29,35 @@ const double gridWidth = 380.0;
 const double gridHeight = gridWidth / 0.65;
 
 class _MyHomePageState extends State<MyHomePage> {
-  double buttonTop;
+  bool isHide = true;
+  double buttonBottom;
   double gridTop = -gridHeight;
+  List<String> fileNames = List<String>();
 
-  List<String> fileNames = [
-    'assets/t1.JPG',
-    'assets/t2.JPG',
-    'assets/t3.JPG',
-    'assets/t4.JPG',
-    'assets/t5.JPG',
-    'assets/t6.JPG',
-    'assets/t7.JPG',
-    'assets/t8.JPG',
-    'assets/t9.JPG',
-    'assets/t10.JPG',
-    'assets/t11.JPG',
-    'assets/t12.JPG',
-    'assets/t13.JPG',
-    'assets/t14.JPG',
-    'assets/t15.JPG',
-    'assets/t16.JPG',
-  ];
-
-  void _moveCard() {
+  @override
+  void initState(){
+    super.initState();
+    Future<String> loadString = DefaultAssetBundle.of(context).loadString('assets/image.json');
+    loadString.then((String v){
+      setState(() {
+        var jsonData = json.decode(v);
+        var originList = jsonData["path"];
+        fileNames = List<String>.from(originList);
+      });
+    });
+  }
+  
+  void _moveCard(bool isHide) {
     Size s = MediaQuery.of(context).size;
+    this.isHide = !isHide;
     setState(() {
-      gridTop = (s.height - gridHeight) / 2;
-      buttonTop = gridTop + gridHeight + 20.0;
+      if(this.isHide){
+        gridTop = -gridHeight;
+        buttonBottom = null;
+      }else {
+        gridTop = (s.height - gridHeight) / 2;
+        buttonBottom = 10.0;
+      }
     });
   }
 
@@ -78,12 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(10.0),
                   itemCount: fileNames.length,
                   gridDelegate:
-                    SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 5.0,
-                      crossAxisSpacing: 5.0,
-                      childAspectRatio: 0.75,
-                    ),
+                  SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 5.0,
+                    crossAxisSpacing: 5.0,
+                    childAspectRatio: 0.75,
+                  ),
                   itemBuilder: (context, i){
                     return AnimatedBlindCard(fileNames[i]);
                   },
@@ -91,11 +94,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
 
               AnimatedPositioned(
-                top: buttonTop,
+                bottom: buttonBottom,
                 duration: Duration(milliseconds: 1000),
-                child: RaisedButton(
-                  child: Text('Start'),
-                  onPressed: () => _moveCard(),
+
+                child: Container(
+                  height: 40.0,
+                  child: RaisedButton(
+                    splashColor: Colors.purpleAccent,
+                    color: Colors.pink,
+                    textColor: Colors.white,
+                    child: Text(
+                      isHide ? 'Show' : 'Hide',
+                    ),
+                    onPressed: () => _moveCard(isHide),
+                  ),
                 ),
               ),
             ],
@@ -193,20 +205,19 @@ class BlindCard extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          image: DecorationImage(
-            image: AssetImage(imgPath),
-            fit: BoxFit.cover,
-          ),
-          boxShadow: [
-            new BoxShadow(
-                color: Colors.black26,
-                offset: new Offset(2.0, 2.0),
-                blurRadius: 4.0,
-                spreadRadius: 0.0)
-          ]),
-      // width: 60.0,
-      // height: 80.0,
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        image: DecorationImage(
+          image: AssetImage(imgPath),
+          fit: BoxFit.cover,
+        ),
+        boxShadow: [
+          new BoxShadow(
+              color: Colors.black26,
+              offset: new Offset(2.0, 2.0),
+              blurRadius: 4.0,
+              spreadRadius: 0.0)
+        ]
+      ),
     );
   }
 }
